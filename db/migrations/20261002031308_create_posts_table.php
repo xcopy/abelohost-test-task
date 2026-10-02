@@ -12,6 +12,8 @@ final class CreatePostsTable extends AbstractMigration
             ->addColumn('name', 'string', ['null' => false])
             ->addColumn('description', 'text', ['null' => false])
             ->addColumn('body', 'text', ['null' => false])
+            ->addColumn('image_url', 'string')
+            ->addColumn('views', 'integer', ['null' => false, 'default'=> 0])
             ->addTimestamps()
             ->save();
     }

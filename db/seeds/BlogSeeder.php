@@ -38,6 +38,8 @@ class BlogSeeder extends AbstractSeed
                 'name' => $post['title'],
                 'description' => mb_substr($post['body'], 0, 100) . '...',
                 'body' => $post['body'],
+                'image_url' => "https://picsum.photos/seed/{$post['id']}/800/400",
+                'views' => $post['views'],
                 'created_at' => date('Y-m-d H:i:s', random_int(
                     strtotime('-1 year'),
                     strtotime('-1 day')
