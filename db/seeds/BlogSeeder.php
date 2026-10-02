@@ -8,11 +8,11 @@ class BlogSeeder extends AbstractSeed
 {
     public function run(): void
     {
-        $this->execute('SET FOREIGN_KEY_CHECKS = 0');
+        $this->execute('set foreign_key_checks = 0');
         $this->table('category_post')->truncate();
         $this->table('categories')->truncate();
         $this->table('posts')->truncate();
-        $this->execute('SET FOREIGN_KEY_CHECKS = 1');
+        $this->execute('set foreign_key_checks = 1');
 
         $json = file_get_contents('https://dummyjson.com/posts?limit=101');
         $data = json_decode($json, true);
@@ -38,11 +38,38 @@ class BlogSeeder extends AbstractSeed
                 'name' => $post['title'],
                 'description' => mb_substr($post['body'], 0, 100) . '...',
                 'body' => $post['body'],
+                'tags' => join(',', $post['tags']),
             ];
         }
+
+        // add temp. column
+        $this->execute('alter table posts add column tags varchar(255)');
 
         $this->table('posts')
             ->insert($posts)
             ->saveData();
+
+        $pivot = [];
+
+        foreach ($this->fetchAll('select id, tags from posts') as $post) {
+            $tags = explode(',', $post['tags']);
+            $tags = array_map(fn($tag) => "'$tag'", $tags);
+
+            $categories = $this->fetchAll(sprintf('select id from categories where name in (%s)', join(',', $tags)));
+
+            foreach ($categories as $category) {
+                $pivot[] = [
+                    'category_id' => $category['id'],
+                    'post_id' => $post['id'],
+                ];
+            }
+        }
+
+        $this->table('category_post')
+            ->insert($pivot)
+            ->saveData();
+
+        // drop temp. column
+        $this->execute('alter table posts drop column tags');
     }
 }
