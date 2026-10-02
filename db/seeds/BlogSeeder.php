@@ -38,6 +38,10 @@ class BlogSeeder extends AbstractSeed
                 'name' => $post['title'],
                 'description' => mb_substr($post['body'], 0, 100) . '...',
                 'body' => $post['body'],
+                'created_at' => date('Y-m-d H:i:s', random_int(
+                    strtotime('-1 year'),
+                    strtotime('-1 day')
+                )),
                 'tags' => join(',', $post['tags']),
             ];
         }
