@@ -3,12 +3,15 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\CategoryController;
+use Dotenv\Dotenv;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 
 define('BASE_PATH', dirname(__DIR__));
 
 require BASE_PATH . '/vendor/autoload.php';
+
+Dotenv::createUnsafeImmutable(BASE_PATH)->load();
 
 $dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $routeCollector) {
     $routeCollector->addRoute('GET', '/', [CategoryController::class, 'index']);
