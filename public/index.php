@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PostController;
 use Dotenv\Dotenv;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
@@ -17,6 +18,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $routeCollecto
     $routeCollector->addRoute('GET', '/', [CategoryController::class, 'index']);
     $routeCollector->addRoute('GET', '/categories', [CategoryController::class, 'index']);
     $routeCollector->addRoute('GET', '/categories/{id:\d+}', [CategoryController::class, 'show']);
+    $routeCollector->addRoute('GET', '/posts/{id:\d+}', [PostController::class, 'show']);
 });
 
 $httpMethod = $_SERVER['REQUEST_METHOD'];
