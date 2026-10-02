@@ -32,6 +32,14 @@ class PostController extends Controller
             [$post['id'], $post['id']]
         );
 
-        $this->render('post/show.tpl', compact('post', 'similarPosts'));
+        $categories = DB::fetchAll(
+            'select c.*
+            from categories c
+            inner join category_post cp on cp.category_id = c.id
+            and cp.post_id = ?',
+            [$post['id']]
+        );
+
+        $this->render('post/show.tpl', compact('categories', 'post', 'similarPosts'));
     }
 }
