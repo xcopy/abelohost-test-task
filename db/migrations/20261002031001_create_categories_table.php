@@ -11,6 +11,8 @@ final class CreateCategoriesTable extends AbstractMigration
         $this->table('categories')
             ->addColumn('name', 'string', ['null' => false])
             ->addColumn('description', 'string')
+            ->addTimestamps()
+            ->addIndex(['name'], ['unique' => true])
             ->save();
     }
 
