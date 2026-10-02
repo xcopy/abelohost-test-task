@@ -5,14 +5,7 @@
     {foreach $categories as $category}
         <li>
             <a href="/categories/{$category.id}">{$category.name|escape}</a>
-            <ul>
-            {foreach $category.posts as $post}
-                <li>
-                    <time datetime="{$post.created_at}">{$post.created_at|date_format:"%d %b %Y %H:%M"}</time>
-                    <a href="/posts/{$post.id}">{$post.name|escape}</a>
-                </li>
-            {/foreach}
-            </ul>
+            {include file="partials/posts.tpl" posts=$category.posts}
         </li>
     {/foreach}
 </ul>

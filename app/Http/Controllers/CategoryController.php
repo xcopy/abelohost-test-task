@@ -40,4 +40,25 @@ class CategoryController extends Controller
 
         $this->render('category/index.tpl', compact('categories'));
     }
+
+    public function show(int $id)
+    {
+        $category = DB::fetch('select * from categories where id = ?', [$id]);
+
+        if ($category === null) {
+            http_response_code(404);
+            throw new \Exception('Page not found'); // todo
+        }
+
+        $posts = DB::fetchAll(
+            'select p.*, cp.category_id
+            from posts p
+            inner join category_post cp on cp.post_id = p.id
+            where cp.category_id = ?
+            order by p.created_at desc',
+            [$category['id']]
+        );
+
+        $this->render('category/show.tpl', compact('category', 'posts'));
+    }
 }

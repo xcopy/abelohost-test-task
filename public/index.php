@@ -16,6 +16,7 @@ Dotenv::createUnsafeImmutable(BASE_PATH)->load();
 $dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $routeCollector) {
     $routeCollector->addRoute('GET', '/', [CategoryController::class, 'index']);
     $routeCollector->addRoute('GET', '/categories', [CategoryController::class, 'index']);
+    $routeCollector->addRoute('GET', '/categories/{id:\d+}', [CategoryController::class, 'show']);
 });
 
 $httpMethod = $_SERVER['REQUEST_METHOD'];
@@ -43,7 +44,13 @@ switch ($routeInfo[0]) {
 
         $controller = new $controllerClass();
 
-        call_user_func_array([$controller, $action], $vars);
+        // cast integerish values to ineger
+        $params = array_map(
+            fn($v) => ctype_digit((string) $v) ? (int) $v : $v,
+            array_values($vars)
+        );
+
+        call_user_func_array([$controller, $action], $params);
 
         break;
 }
