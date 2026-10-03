@@ -30,6 +30,10 @@ if (false !== $pos = strpos($uri, '?')) {
 
 $uri = rawurldecode($uri);
 
+if ($uri !== '/' && str_ends_with($uri, '/')) {
+    $uri = rtrim($uri, '/');
+}
+
 $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 
 switch ($routeInfo[0]) {
