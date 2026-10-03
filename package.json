@@ -1,0 +1,9 @@
+{
+  "name": "abelohost-test-task",
+  "scripts": {
+    "scss:watch": "sass --watch public/css/app.scss:public/css/app.css"
+  },
+  "devDependencies": {
+    "sass": "^1.105.1"
+  }
+}
