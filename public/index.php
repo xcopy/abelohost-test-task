@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
+use App\View\PhpRenderer;
+use App\View\SmartyRenderer;
+use App\View\TwigRenderer;
 use Dotenv\Dotenv;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
@@ -48,7 +51,15 @@ switch ($routeInfo[0]) {
 
         [$controllerClass, $action] = $handler;
 
-        $controller = new $controllerClass();
+        $config = require BASE_PATH . '/config/app.php';
+
+        $renderer = match ($config['renderer']) {
+            'php' => new PhpRenderer(),
+            'twig' => new TwigRenderer(),
+            default => new SmartyRenderer(),
+        };
+
+        $controller = new $controllerClass($renderer);
 
         // cast integerish values to ineger
         $params = array_map(
