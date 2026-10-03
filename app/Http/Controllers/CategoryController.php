@@ -50,15 +50,39 @@ class CategoryController extends Controller
             throw new \Exception('Page not found'); // todo
         }
 
+        $perPage = 10;
+        $page = max(1, (int) ($_GET['page'] ?? 1));
+
+        $totalCount = DB::query(
+            'select count(*)
+            from posts p
+            inner join category_post cp on cp.post_id = p.id
+            where cp.category_id = ?',
+            [$category['id']]
+        )->fetchColumn();
+
+        $totalPages = ceil($totalCount / $perPage);
+
+        // re-calculate page based on totals (page should be <= total pages)
+        $page = min($page, $totalPages > 0 ? $totalPages : 1);
+        $offset = ($page - 1) * $perPage;
+
         $posts = DB::fetchAll(
-            'select p.*, cp.category_id
+            "select p.*
             from posts p
             inner join category_post cp on cp.post_id = p.id
             where cp.category_id = ?
-            order by p.created_at desc',
+            order by p.created_at desc
+            limit $perPage offset $offset",
             [$category['id']]
         );
 
-        $this->render('category/show.tpl', compact('category', 'posts'));
+        $this->render('category/show.tpl', compact(
+            'category',
+            'posts',
+            'page',
+            'totalCount',
+            'totalPages'
+        ));
     }
 }
