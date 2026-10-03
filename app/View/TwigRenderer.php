@@ -19,7 +19,7 @@ class TwigRenderer implements RendererInterface
     public function render(string $template, array $data = []): void
     {
         // example
-        // echo $this->twig->render($template, $data);
+        // echo $this->twig->render("$template.twig", $data);
         throw new \Exception('Not implemented');
     }
 }

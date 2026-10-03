@@ -39,7 +39,7 @@ class CategoryController extends Controller
 
         unset($category);
 
-        $this->render('category/index.tpl', compact('categories'));
+        $this->render('category/index', compact('categories'));
     }
 
     public function show(int $id)
@@ -83,7 +83,7 @@ class CategoryController extends Controller
             [$category['id']]
         );
 
-        $this->render('category/show.tpl', compact(
+        $this->render('category/show', compact(
             'category',
             'posts',
             'page',

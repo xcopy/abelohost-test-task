@@ -40,6 +40,6 @@ class PostController extends Controller
             [$post['id']]
         );
 
-        $this->render('post/show.tpl', compact('categories', 'post', 'similarPosts'));
+        $this->render('post/show', compact('categories', 'post', 'similarPosts'));
     }
 }
