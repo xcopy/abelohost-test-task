@@ -25,6 +25,7 @@ class CategoryController extends Controller
                     p.id,
                     p.name,
                     p.created_at,
+                    p.views,
                     row_number() over (partition by c.id order by p.created_at desc) as rn
                 from categories c
                 inner join category_post cp on cp.category_id = c.id
@@ -67,12 +68,17 @@ class CategoryController extends Controller
         $page = min($page, $totalPages > 0 ? $totalPages : 1);
         $offset = ($page - 1) * $perPage;
 
+        $sort = $_GET['sort'] ?? 'created_at';
+        $sort = in_array($sort, ['created_at', 'views']) ? $sort : 'created_at';
+        $direction = strtolower($_GET['direction'] ?? 'desc');
+        $direction = $direction === 'asc' ? 'asc' : 'desc';
+
         $posts = DB::fetchAll(
             "select p.*
             from posts p
             inner join category_post cp on cp.post_id = p.id
             where cp.category_id = ?
-            order by p.created_at desc
+            order by p.$sort $direction
             limit $perPage offset $offset",
             [$category['id']]
         );
@@ -82,7 +88,9 @@ class CategoryController extends Controller
             'posts',
             'page',
             'totalCount',
-            'totalPages'
+            'totalPages',
+            'sort',
+            'direction'
         ));
     }
 }

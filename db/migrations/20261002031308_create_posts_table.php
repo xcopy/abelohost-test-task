@@ -15,6 +15,8 @@ final class CreatePostsTable extends AbstractMigration
             ->addColumn('image_url', 'string')
             ->addColumn('views', 'integer', ['null' => false, 'default'=> 0])
             ->addTimestamps()
+            ->addIndex('created_at')
+            ->addIndex('views')
             ->save();
     }
 
