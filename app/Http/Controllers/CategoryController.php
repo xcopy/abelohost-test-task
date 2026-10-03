@@ -40,6 +40,8 @@ class CategoryController extends Controller
 
         unset($category);
 
+        $this->addBreadcrumb('Categories');
+
         $this->render('category/index', compact('categories'));
     }
 
@@ -82,6 +84,8 @@ class CategoryController extends Controller
             limit $perPage offset $offset",
             [$category['id']]
         );
+
+        $this->addBreadcrumb($category['name']);
 
         $this->render('category/show', compact(
             'category',

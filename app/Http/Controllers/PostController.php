@@ -40,6 +40,8 @@ class PostController extends Controller
             [$post['id']]
         );
 
+        $this->addBreadcrumb($post['name']);
+
         $this->render('post/show', compact('categories', 'post', 'similarPosts'));
     }
 }

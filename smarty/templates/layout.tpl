@@ -7,8 +7,22 @@
     <link href="/css/app.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <div class="container">
-      {block name=body}{/block}
-    </div>
+    <main class="container">
+        <nav class="breadcrumbs">
+            <ol>
+                {foreach $breadcrumbs as $item}
+                    <li>
+                        {if $item.url && !$item@last}
+                            <a href="{$item.url|escape}">{$item.label|escape}</a>
+                        {else}
+                            <span>{$item.label|escape}</span>
+                        {/if}
+                    </li>
+                {/foreach}
+            </ol>
+        </nav>
+
+        {block name=body}{/block}
+    </main>
   </body>
 </html>
