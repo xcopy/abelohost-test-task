@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\DB;
+use App\Http\Exceptions\NotFoundException;
 
 class PostController extends Controller
 {
@@ -13,8 +14,7 @@ class PostController extends Controller
         $post = DB::fetch('select * from posts where id = ?', [$id]);
 
         if ($post === null) {
-            http_response_code(404);
-            throw new \Exception('Page not found'); // todo
+            throw new NotFoundException();
         }
 
         $similarPosts = DB::fetchAll(

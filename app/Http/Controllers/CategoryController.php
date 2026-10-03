@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\DB;
+use App\Http\Exceptions\NotFoundException;
 
 class CategoryController extends Controller
 {
@@ -47,8 +48,7 @@ class CategoryController extends Controller
         $category = DB::fetch('select * from categories where id = ?', [$id]);
 
         if ($category === null) {
-            http_response_code(404);
-            throw new \Exception('Page not found'); // todo
+            throw new NotFoundException();
         }
 
         $perPage = 10;
