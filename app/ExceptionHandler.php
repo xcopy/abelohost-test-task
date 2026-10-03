@@ -33,6 +33,7 @@ class ExceptionHandler
         $this->view->render('error', [
             'status' => $status,
             'message' => $e->getMessage(),
+            'debug' => $this->debug,
             'trace' => $this->debug ? $e->getTraceAsString() : null,
             'file' => $this->debug ? $e->getFile() : null,
             'line' => $this->debug ? $e->getLine() : null,
