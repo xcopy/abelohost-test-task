@@ -9,7 +9,7 @@ use App\Http\Exceptions\NotFoundException;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(): void
     {
         $categories = DB::fetchAll(
             'select c.id, c.name
@@ -45,7 +45,7 @@ class CategoryController extends Controller
         $this->render('category/index', compact('categories'));
     }
 
-    public function show(int $id)
+    public function show(int $id): void
     {
         $category = DB::fetch('select * from categories where id = ?', [$id]);
 

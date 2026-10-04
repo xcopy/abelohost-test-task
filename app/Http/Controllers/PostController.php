@@ -9,7 +9,7 @@ use App\Http\Exceptions\NotFoundException;
 
 class PostController extends Controller
 {
-    public function show(int $id)
+    public function show(int $id): void
     {
         $post = DB::fetch('select * from posts where id = ?', [$id]);
 
