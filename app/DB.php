@@ -8,10 +8,21 @@ use PDO;
 use PDOException;
 use PDOStatement;
 
+/**
+ * Provides shared access to the application's PDO database connection.
+ */
 class DB
 {
     private static ?PDO $pdo = null;
 
+    /**
+     * Get the shared database connection, creating it on first use.
+     *
+     * This method follows the Singleton pattern: all callers reuse the same
+     * PDO instance for the lifetime of the process.
+     *
+     * @return PDO An instance of the shared database connection.
+     */
     public static function connection(): PDO
     {
         if (self::$pdo === null) {
@@ -47,6 +58,14 @@ class DB
         return self::$pdo;
     }
 
+    /**
+     * Execute a prepared SQL statement.
+     *
+     * @param string $sql    SQL query with optional placeholders.
+     * @param array  $params Values to bind to the query.
+     *
+     * @return PDOStatement The executed statement.
+     */
     public static function query(string $sql, array $params = []): PDOStatement
     {
         $stmt = self::connection()->prepare($sql);
@@ -55,11 +74,27 @@ class DB
         return $stmt;
     }
 
+    /**
+     * Fetch all rows returned by a query.
+     *
+     * @param string $sql    SQL query with optional placeholders.
+     * @param array  $params Values to bind to the query.
+     *
+     * @return array The fetched rows.
+     */
     public static function fetchAll(string $sql, array $params = []): array
     {
         return self::query($sql, $params)->fetchAll();
     }
 
+    /**
+     * Fetch the first row returned by a query.
+     *
+     * @param string $sql    SQL query with optional placeholders.
+     * @param array  $params Values to bind to the query.
+     *
+     * @return array|null The fetched row, or null if none exists.
+     */
     public static function fetch(string $sql, array $params = []): ?array
     {
         $result = self::query($sql, $params)->fetch();
