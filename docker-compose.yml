@@ -1,0 +1,40 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: abelohost-app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      APP_ENV: local
+      APP_RENDERER: smarty
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: abelohost
+      DB_USERNAME: abelohost
+      DB_PASSWORD: abelohost
+    depends_on:
+      - db
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+
+  db:
+    image: mysql:8.0
+    container_name: abelohost-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: abelohost
+      MYSQL_USER: abelohost
+      MYSQL_PASSWORD: abelohost
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
