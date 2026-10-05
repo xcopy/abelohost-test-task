@@ -6,7 +6,7 @@ namespace App\Http\Exceptions;
 
 class MethodNotAllowedException extends \Exception
 {
-    public function __construct(string $message = 'Bad Request')
+    public function __construct(string $message = 'Method Not Allowed')
     {
         parent::__construct($message, 405);
     }
