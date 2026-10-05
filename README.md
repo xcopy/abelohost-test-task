@@ -21,7 +21,6 @@ A lightweight PHP application for browsing blog categories and posts using a sim
 - PHP 8.1+
 - Composer
 - MySQL 8.4+
-- Node.js and npm
 
 ## Setup
 
@@ -29,12 +28,6 @@ Install PHP dependencies:
 
 ```bash
 composer install
-```
-
-Install frontend dependencies:
-
-```bash
-npm install
 ```
 
 Copy the environment file and adjust database settings if needed:
